@@ -760,9 +760,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &573388615
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -906,9 +906,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &588191550
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1057,9 +1057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &849794833
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1219,9 +1219,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &1242657998
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1365,9 +1365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &1340787189
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1873,7 +1873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4218569254592762292, guid: fb011214b6f37574495be5e689673da2, type: 3}
       propertyPath: jumpForce
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7283018822359808737, guid: fb011214b6f37574495be5e689673da2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2175,9 +2175,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &1793894511
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2355,9 +2355,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &1994008981
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2501,9 +2501,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf16b6653158e244a032bab0ed1f97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collapseDelay: 3
-  collapseEffect: {fileID: 0}
-  collapseSound: {fileID: 0}
+  collapseDelay: 0.7
+  collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
 --- !u!212 &2046443788
 SpriteRenderer:
   m_ObjectHideFlags: 0
