@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0228f015344fb4cb64aa7bde542ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
   collectEffect: {fileID: 0}
 --- !u!61 &410868289
 BoxCollider2D:
@@ -459,7 +459,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -667,7 +667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0228f015344fb4cb64aa7bde542ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
   collectEffect: {fileID: 0}
 --- !u!61 &458914419
 BoxCollider2D:
@@ -698,7 +698,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1703,7 +1703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0228f015344fb4cb64aa7bde542ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
   collectEffect: {fileID: 0}
 --- !u!61 &1480450626
 BoxCollider2D:
@@ -1734,7 +1734,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
