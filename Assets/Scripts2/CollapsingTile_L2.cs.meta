@@ -3,7 +3,9 @@ guid: 4bf16b6653158e244a032bab0ed1f97c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - collapseEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  - collapseSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

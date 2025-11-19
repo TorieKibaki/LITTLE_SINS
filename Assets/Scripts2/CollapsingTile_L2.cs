@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CollapsingTile_L2 : MonoBehaviour
 {
-    public float collapseDelay = 3f;
+    public float collapseDelay = 1f;
     public ParticleSystem collapseEffect;
     public AudioClip collapseSound;
 
