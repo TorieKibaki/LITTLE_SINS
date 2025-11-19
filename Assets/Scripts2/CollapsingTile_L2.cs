@@ -7,7 +7,7 @@ public class CollapsingTile_L2 : MonoBehaviour
     public ParticleSystem collapseEffect;
     public AudioClip collapseSound;
 
-    private float timer = 0f;
+    private bool playerOnTile = false;
     private bool collapsing = false;
 
     private SpriteRenderer sr;
@@ -19,53 +19,64 @@ public class CollapsingTile_L2 : MonoBehaviour
         col = GetComponent<Collider2D>();
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collapsing) return;
-        if (!collision.collider.CompareTag("Player")) return;
-
-        // Start timer when player is on the tile
-        timer += Time.deltaTime;
-
-        if (timer >= collapseDelay)
+        if (collision.collider.CompareTag("Player") && !collapsing)
         {
-            collapsing = true;
-            StartCoroutine(Collapse());
+            playerOnTile = true;
+            StartCoroutine(CollapseCountdown());
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // Reset timer if player leaves the tile
         if (collision.collider.CompareTag("Player"))
-            timer = 0f;
+        {
+            playerOnTile = false;
+        }
+    }
+
+    private IEnumerator CollapseCountdown()
+    {
+        float t = 0f;
+
+        while (playerOnTile && t < collapseDelay)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        if (playerOnTile && !collapsing)
+        {
+            StartCoroutine(Collapse());
+        }
     }
 
     private IEnumerator Collapse()
     {
-        // FX and Sound
+        collapsing = true;
+
         if (collapseEffect != null)
             Instantiate(collapseEffect, transform.position, Quaternion.identity);
 
         if (collapseSound != null)
             AudioSource.PlayClipAtPoint(collapseSound, transform.position);
 
-        // Hide tile
         sr.enabled = false;
         col.enabled = false;
 
-        // **Notify GameManager to count the collapse and check for death**
+        // Notify GameManager that a tile collapsed
         GameManager.instance.RegisterCollapsedTile();
 
         yield return null;
     }
 
-    // CALLED WHEN PLAYER DIES
+    // Called when player dies
     public void ResetTile()
     {
         sr.enabled = true;
         col.enabled = true;
-        timer = 0f;
         collapsing = false;
+        playerOnTile = false;
     }
 }
