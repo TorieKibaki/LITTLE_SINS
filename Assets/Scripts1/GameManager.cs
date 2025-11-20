@@ -19,9 +19,6 @@ public class GameManager : MonoBehaviour
     public int collapsedTiles = 0;
     public int maxCollapsedTiles = 2; // The second tile collapse causes death
 
-    [Header("Level 3 Settings")]
-    public float pitfallYThreshold = -2f;
-
     [Header("Respawn & Player")]
     public GameObject player;
     public Transform spawnPoint;
@@ -41,6 +38,7 @@ public class GameManager : MonoBehaviour
     // --- Tile Management (If Level 1 uses the base CollapsingTile) ---
     // If Level 1 uses CollapsingTile, Level 2 uses CollapsingTile_L2
     private List<CollapsingTile_L2> activeL1Tiles = new List<CollapsingTile_L2>();
+    private float pitfallYThreshold = -2;
 
     private void Awake()
     {
@@ -112,30 +110,6 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(PlayerDies("Watch your step!"));
             }
         }
-
-        // **LEVEL 3 SPECIFIC LOGIC (Index 2)**
-        else if (currentLevelIndex == 2)
-        {
-            // On collapse, check if player has fallen into the pit
-            CheckPitfallDeath();
-        }
-    }
-
-    // **NEW METHOD: Checks Y position and triggers death**
-    public void CheckPitfallDeath()
-    {
-        int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // Only apply this check for Level 3
-        if (currentLevelIndex == 2)
-        {
-            // Check if player's Y position is below the threshold
-            if (player.transform.position.y < pitfallYThreshold)
-            {
-                // Trigger the death sequence
-                StartCoroutine(PlayerDies("Watch out for the abyss!"));
-            }
-        }
     }
 
     // -------------------------------------------------------------------
@@ -165,23 +139,25 @@ public class GameManager : MonoBehaviour
                 return false;
             }
         }
-        // **LEVEL 3 SPECIFIC EXIT REQUIREMENT (Index 2)**
-        else if (currentLevelIndex == 2)
-        {
-            // Player needs at least 1 collectible to exit Level 3
-            if (collected < 1)
-            {
-                StartCoroutine(ShowHint("You need at least 1 collectible."));
-                return false;
-            }
-        }
 
         // Default allows exit for all other levels
         return true;
-
-
-
     }
+
+    public void CheckPitfallDeath()
+    {
+        int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Only Level 3 uses pitfall logic
+        if (currentLevelIndex == 2)
+        {
+            if (player.transform.position.y < pitfallYThreshold)
+            {
+                StartCoroutine(PlayerDies("Oops!"));
+            }
+        }
+    }
+
 
     // -------------------------------------------------------------------
     // DEATH AND RESPAWN LOGIC (UNIVERSAL)
@@ -251,13 +227,8 @@ public class GameManager : MonoBehaviour
                 t.ResetTile();
         }
         // Add else if (currentLevelIndex == 2) for Level 3 tiles later...
-        // **LEVEL 3 TILE RESET LOGIC**
-        else if (currentLevelIndex == 2)
-        {
-            CollapsingTile_L3[] l3Tiles = FindObjectsOfType<CollapsingTile_L3>();
-            foreach (CollapsingTile_L3 t in l3Tiles)
-                t.ResetTile();
-        }
+
+      
     }
 
     // -------------------------------------------------------------------

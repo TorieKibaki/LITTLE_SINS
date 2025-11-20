@@ -3,11 +3,11 @@ using System.Collections;
 
 public class CollapsingTile_L3 : MonoBehaviour
 {
-    public float collapseDelay = 0.3f; // Faster collapse time
+    public float collapseDelay = 0.3f;
     public ParticleSystem collapseEffect;
     public AudioClip collapseSound;
 
-    private float timer = 0f;
+    private bool playerOnTile = false;
     private bool collapsing = false;
 
     private SpriteRenderer sr;
@@ -19,52 +19,59 @@ public class CollapsingTile_L3 : MonoBehaviour
         col = GetComponent<Collider2D>();
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collapsing) return;
-        if (!collision.collider.CompareTag("Player")) return;
+        if (!collision.collider.CompareTag("Player") || collapsing)
+            return;
 
-        timer += Time.deltaTime;
-
-        if (timer >= collapseDelay)
-        {
-            collapsing = true;
-            StartCoroutine(Collapse());
-        }
+        playerOnTile = true;
+        StartCoroutine(CollapseCountdown());
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Player"))
-            timer = 0f;
+            playerOnTile = false;
+    }
+
+    private IEnumerator CollapseCountdown()
+    {
+        float t = 0f;
+
+        while (playerOnTile && t < collapseDelay)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        if (playerOnTile && !collapsing)
+            StartCoroutine(Collapse());
     }
 
     private IEnumerator Collapse()
     {
-        // FX and Sound
+        collapsing = true;
+
         if (collapseEffect != null)
             Instantiate(collapseEffect, transform.position, Quaternion.identity);
 
         if (collapseSound != null)
             AudioSource.PlayClipAtPoint(collapseSound, transform.position);
 
-        // Hide tile
         sr.enabled = false;
         col.enabled = false;
 
-        // **CRITICAL: Check for Pitfall Death IMMEDIATELY after tile collapses**
-        // The GameManager handles the death check based on the player's Y position.
+        // Check pitfall death AFTER collapse
         GameManager.instance.CheckPitfallDeath();
 
         yield return null;
     }
 
-    // CALLED WHEN PLAYER DIES
     public void ResetTile()
     {
         sr.enabled = true;
         col.enabled = true;
-        timer = 0f;
         collapsing = false;
+        playerOnTile = false;
     }
 }
