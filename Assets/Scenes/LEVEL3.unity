@@ -2354,9 +2354,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 505699037}
     - target: {fileID: 3730232728229113039, guid: 6e06bb6932e55f946ab22278f078f5fe, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730232728229113039, guid: 6e06bb6932e55f946ab22278f078f5fe, type: 3}
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 294832328}
+    - target: {fileID: 3730232728229113039, guid: 6e06bb6932e55f946ab22278f078f5fe, type: 3}
+      propertyPath: deathEffect
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3730232728229113039, guid: 6e06bb6932e55f946ab22278f078f5fe, type: 3}
       propertyPath: hintTextObject
       value: 
