@@ -32,11 +32,9 @@ public class GameManager : MonoBehaviour
     public AudioSource levelMusic;
 
     // --- Collectibles Management ---
-    // Stores all collectibles in the scene for respawn
     private List<Collectible> activeCollectibles = new List<Collectible>();
 
-    // --- Tile Management (If Level 1 uses the base CollapsingTile) ---
-    // If Level 1 uses CollapsingTile, Level 2 uses CollapsingTile_L2
+    // --- Tile Management ---
     private List<CollapsingTile_L2> activeL1Tiles = new List<CollapsingTile_L2>();
     private float pitfallYThreshold = -2;
 
@@ -59,7 +57,7 @@ public class GameManager : MonoBehaviour
         activeCollectibles.Clear();
         activeCollectibles.AddRange(FindObjectsOfType<Collectible>());
 
-        // Find L1 tiles if they exist (assumes Level 1 uses the base script)
+        // Find L1 tiles if they exist
         activeL1Tiles.Clear();
         activeL1Tiles.AddRange(FindObjectsOfType<CollapsingTile_L2>());
 
@@ -70,6 +68,20 @@ public class GameManager : MonoBehaviour
         if (levelMusic != null && !levelMusic.isPlaying)
         {
             levelMusic.Play();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // NEW: UPDATE LOOP ADDED FOR LEVEL 3 PITFALL CHECK
+    // -------------------------------------------------------------------
+    private void Update()
+    {
+        int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Only run this check if we are in Level 3 (Index 2)
+        if (currentLevelIndex == 2)
+        {
+            CheckPitfallDeath();
         }
     }
 
@@ -91,11 +103,11 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(PlayerDies("Collect Fewer!"));
             }
         }
-        // Level 2 has no death condition based on collecting items.
+        // Level 2 & 3 have no maximum limit on collecting items.
     }
 
     // -------------------------------------------------------------------
-    // CALLED BY CollapsingTile_L2.cs (and CollapsingTile.cs if used for L1)
+    // CALLED BY TILE SCRIPTS
     // -------------------------------------------------------------------
     public void RegisterCollapsedTile()
     {
@@ -122,7 +134,6 @@ public class GameManager : MonoBehaviour
         // LEVEL 1 SPECIFIC EXIT REQUIREMENT (Index 0)
         if (currentLevelIndex == 0)
         {
-            // Player needs at least 1 collectible to exit Level 1
             if (collected < 1)
             {
                 StartCoroutine(ShowHint("You need at least 1 collectible."));
@@ -132,7 +143,15 @@ public class GameManager : MonoBehaviour
         // **LEVEL 2 SPECIFIC EXIT REQUIREMENT (Index 1)**
         else if (currentLevelIndex == 1)
         {
-            // Player needs at least 1 collectible to exit Level 2
+            if (collected < 1)
+            {
+                StartCoroutine(ShowHint("You need at least 1 collectible."));
+                return false;
+            }
+        }
+        // **LEVEL 3 SPECIFIC EXIT REQUIREMENT (Index 2)** - ADDED PER REQUEST
+        else if (currentLevelIndex == 2)
+        {
             if (collected < 1)
             {
                 StartCoroutine(ShowHint("You need at least 1 collectible."));
@@ -146,18 +165,12 @@ public class GameManager : MonoBehaviour
 
     public void CheckPitfallDeath()
     {
-        int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // Only Level 3 uses pitfall logic
-        if (currentLevelIndex == 2)
+        // If player falls below Y -2, kill them
+        if (player.transform.position.y < pitfallYThreshold)
         {
-            if (player.transform.position.y < pitfallYThreshold)
-            {
-                StartCoroutine(PlayerDies("Oops!"));
-            }
+            StartCoroutine(PlayerDies("Oops! You fell."));
         }
     }
-
 
     // -------------------------------------------------------------------
     // DEATH AND RESPAWN LOGIC (UNIVERSAL)
@@ -187,6 +200,12 @@ public class GameManager : MonoBehaviour
 
         player.transform.position = spawnPoint.position;
 
+        // Reset physics velocity so the player doesn't keep falling instantly after respawn
+        if (player.GetComponent<Rigidbody>() != null)
+        {
+            player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
+
         collected = 0; // Reset count
         collapsedTiles = 0; // Reset tile count for L2
         UpdateUI();
@@ -212,27 +231,30 @@ public class GameManager : MonoBehaviour
 
         if (currentLevelIndex == 0)
         {
-            // Resets base CollapsingTile (if used in Level 1)
             foreach (CollapsingTile_L2 t in activeL1Tiles)
             {
-                if (t != null)
-                    t.ResetTile();
+                if (t != null) t.ResetTile();
             }
         }
         else if (currentLevelIndex == 1)
         {
-            // Resets CollapsingTile_L2 (used in Level 2)
             CollapsingTile_L2[] l2Tiles = FindObjectsOfType<CollapsingTile_L2>();
-            foreach (CollapsingTile_L2 t in l2Tiles)
-                t.ResetTile();
+            foreach (CollapsingTile_L2 t in l2Tiles) t.ResetTile();
         }
-        // Add else if (currentLevelIndex == 2) for Level 3 tiles later...
-
-      
+        // **LEVEL 3 RESPAWN LOGIC** - ADDED PER REQUEST
+        else if (currentLevelIndex == 2)
+        {
+            // Finds all tiles in Level 3 and resets them
+            CollapsingTile_L2[] l3Tiles = FindObjectsOfType<CollapsingTile_L2>();
+            foreach (CollapsingTile_L2 t in l3Tiles)
+            {
+                if (t != null) t.ResetTile();
+            }
+        }
     }
 
     // -------------------------------------------------------------------
-    // UI AND HINT LOGIC (UNIVERSAL)
+    // UI AND HINT LOGIC
     // -------------------------------------------------------------------
     public IEnumerator ShowHint(string message)
     {
