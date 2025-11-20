@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Level 2 Tile System")]
     public int collapsedTiles = 0;
-    public int maxCollapsedTiles = 2; // The second tile collapse causes death
+    public int maxCollapsedTiles = 2;
 
     [Header("Respawn & Player")]
     public GameObject player;
@@ -35,7 +35,9 @@ public class GameManager : MonoBehaviour
     private List<Collectible> activeCollectibles = new List<Collectible>();
 
     // --- Tile Management ---
-    private List<CollapsingTile_L2> activeL1Tiles = new List<CollapsingTile_L2>();
+    private List<CollapsingTile_L2> activeL1Tiles = new List<CollapsingTile_L2>(); // Level 1/2 Tiles
+    private List<CollapsingTile_L3> activeL3Tiles = new List<CollapsingTile_L3>(); // NEW: Level 3 Tiles
+
     private float pitfallYThreshold = -2;
 
     private void Awake()
@@ -50,44 +52,36 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Reset count and find relevant objects on every level load
         collected = 0;
         collapsedTiles = 0;
 
+        // Find all Collectibles
         activeCollectibles.Clear();
         activeCollectibles.AddRange(FindObjectsOfType<Collectible>());
 
-        // Find L1 tiles if they exist
+        // Find Level 2 specific tiles (if any)
         activeL1Tiles.Clear();
         activeL1Tiles.AddRange(FindObjectsOfType<CollapsingTile_L2>());
 
-        UpdateUI();
-        if (hintTextObject != null)
-            hintTextObject.SetActive(false);
+        // NEW: Find Level 3 specific tiles
+        activeL3Tiles.Clear();
+        activeL3Tiles.AddRange(FindObjectsOfType<CollapsingTile_L3>());
 
-        if (levelMusic != null && !levelMusic.isPlaying)
-        {
-            levelMusic.Play();
-        }
+        UpdateUI();
+        if (hintTextObject != null) hintTextObject.SetActive(false);
+
+        if (levelMusic != null && !levelMusic.isPlaying) levelMusic.Play();
     }
 
-    // -------------------------------------------------------------------
-    // NEW: UPDATE LOOP ADDED FOR LEVEL 3 PITFALL CHECK
-    // -------------------------------------------------------------------
     private void Update()
     {
-        int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // Only run this check if we are in Level 3 (Index 2)
-        if (currentLevelIndex == 2)
+        // Check for falling in Level 3
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             CheckPitfallDeath();
         }
     }
 
-    // -------------------------------------------------------------------
-    // CALLED BY COLLECTIBLE SCRIPT
-    // -------------------------------------------------------------------
     public void AddCollectible()
     {
         collected++;
@@ -95,25 +89,18 @@ public class GameManager : MonoBehaviour
 
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // LEVEL 1 SPECIFIC LOGIC (Index 0)
-        if (currentLevelIndex == 0)
+        // Level 1 Death Logic
+        if (currentLevelIndex == 0 && collected > level1MaxAllowedCollectibles)
         {
-            if (collected > level1MaxAllowedCollectibles)
-            {
-                StartCoroutine(PlayerDies("Collect Fewer!"));
-            }
+            StartCoroutine(PlayerDies("Collect Fewer!"));
         }
-        // Level 2 & 3 have no maximum limit on collecting items.
     }
 
-    // -------------------------------------------------------------------
-    // CALLED BY TILE SCRIPTS
-    // -------------------------------------------------------------------
     public void RegisterCollapsedTile()
     {
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // **LEVEL 2 SPECIFIC TILE LOGIC (Index 1)**
+        // Level 2 Death Logic
         if (currentLevelIndex == 1)
         {
             collapsedTiles++;
@@ -124,15 +111,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // -------------------------------------------------------------------
-    // CALLED BY DOOR SCRIPT
-    // -------------------------------------------------------------------
     public bool CanExit()
     {
+        // Require 1 collectible for Levels 0, 1, and 2
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // LEVEL 1 SPECIFIC EXIT REQUIREMENT (Index 0)
-        if (currentLevelIndex == 0)
+        if (currentLevelIndex <= 2)
         {
             if (collected < 1)
             {
@@ -140,74 +123,42 @@ public class GameManager : MonoBehaviour
                 return false;
             }
         }
-        // **LEVEL 2 SPECIFIC EXIT REQUIREMENT (Index 1)**
-        else if (currentLevelIndex == 1)
-        {
-            if (collected < 1)
-            {
-                StartCoroutine(ShowHint("You need at least 1 collectible."));
-                return false;
-            }
-        }
-        // **LEVEL 3 SPECIFIC EXIT REQUIREMENT (Index 2)** - ADDED PER REQUEST
-        else if (currentLevelIndex == 2)
-        {
-            if (collected < 1)
-            {
-                StartCoroutine(ShowHint("You need at least 1 collectible."));
-                return false;
-            }
-        }
-
-        // Default allows exit for all other levels
         return true;
     }
 
     public void CheckPitfallDeath()
     {
-        // If player falls below Y -2, kill them
         if (player.transform.position.y < pitfallYThreshold)
         {
             StartCoroutine(PlayerDies("Oops! You fell."));
         }
     }
 
-    // -------------------------------------------------------------------
-    // DEATH AND RESPAWN LOGIC (UNIVERSAL)
-    // -------------------------------------------------------------------
     public IEnumerator PlayerDies(string hintMessage = "")
     {
-        // FX and Sound
-        if (deathEffect != null)
-            Instantiate(deathEffect, player.transform.position, Quaternion.identity);
-
-        if (deathSound != null)
-            AudioSource.PlayClipAtPoint(deathSound, player.transform.position);
+        if (deathEffect != null) Instantiate(deathEffect, player.transform.position, Quaternion.identity);
+        if (deathSound != null) AudioSource.PlayClipAtPoint(deathSound, player.transform.position);
 
         player.SetActive(false);
 
-        // Show Hint Message if provided
-        if (!string.IsNullOrEmpty(hintMessage))
-        {
-            StartCoroutine(ShowHint(hintMessage));
-        }
+        if (!string.IsNullOrEmpty(hintMessage)) StartCoroutine(ShowHint(hintMessage));
 
         yield return new WaitForSeconds(1f);
 
-        // Respawn
+        // RESPWAN LOGIC
         RespawnCollectibles();
-        RespawnTiles(); // Respawns tiles for the current level
+        RespawnTiles();
 
         player.transform.position = spawnPoint.position;
 
-        // Reset physics velocity so the player doesn't keep falling instantly after respawn
-        if (player.GetComponent<Rigidbody>() != null)
-        {
+        // RESET PHYSICS (Updated for 2D since your tiles use Collider2D)
+        if (player.GetComponent<Rigidbody2D>() != null)
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        else if (player.GetComponent<Rigidbody>() != null)
             player.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        }
 
-        collected = 0; // Reset count
-        collapsedTiles = 0; // Reset tile count for L2
+        collected = 0;
+        collapsedTiles = 0;
         UpdateUI();
 
         player.SetActive(true);
@@ -216,53 +167,32 @@ public class GameManager : MonoBehaviour
     private void RespawnCollectibles()
     {
         foreach (Collectible c in activeCollectibles)
-        {
-            if (c != null)
-            {
-                c.Respawn();
-            }
-        }
+            if (c != null) c.Respawn();
     }
 
-    // Resets ONLY the tiles relevant to the currently loaded level
     private void RespawnTiles()
     {
         int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
-        if (currentLevelIndex == 0)
+        // Level 1 & 2 Reset
+        if (currentLevelIndex == 0 || currentLevelIndex == 1)
         {
             foreach (CollapsingTile_L2 t in activeL1Tiles)
-            {
                 if (t != null) t.ResetTile();
-            }
         }
-        else if (currentLevelIndex == 1)
-        {
-            CollapsingTile_L2[] l2Tiles = FindObjectsOfType<CollapsingTile_L2>();
-            foreach (CollapsingTile_L2 t in l2Tiles) t.ResetTile();
-        }
-        // **LEVEL 3 RESPAWN LOGIC** - ADDED PER REQUEST
+        // NEW: Level 3 Reset
         else if (currentLevelIndex == 2)
         {
-            // Finds all tiles in Level 3 and resets them
-            CollapsingTile_L2[] l3Tiles = FindObjectsOfType<CollapsingTile_L2>();
-            foreach (CollapsingTile_L2 t in l3Tiles)
-            {
+            foreach (CollapsingTile_L3 t in activeL3Tiles)
                 if (t != null) t.ResetTile();
-            }
         }
     }
 
-    // -------------------------------------------------------------------
-    // UI AND HINT LOGIC
-    // -------------------------------------------------------------------
     public IEnumerator ShowHint(string message)
     {
         if (hintTextObject == null) yield break;
-
         TMP_Text txt = hintTextObject.GetComponent<TMP_Text>();
         if (txt == null) yield break;
-
         txt.text = message;
         hintTextObject.SetActive(true);
         yield return new WaitForSeconds(3f);
@@ -271,7 +201,6 @@ public class GameManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (collectibleText != null)
-            collectibleText.text = collected.ToString();
+        if (collectibleText != null) collectibleText.text = collected.ToString();
     }
 }

@@ -21,6 +21,7 @@ public class CollapsingTile_L3 : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Ensure we only care about the player and ignore if already collapsing
         if (!collision.collider.CompareTag("Player") || collapsing)
             return;
 
@@ -38,12 +39,14 @@ public class CollapsingTile_L3 : MonoBehaviour
     {
         float t = 0f;
 
+        // Wait for delay, but keep checking if player is still on tile
         while (playerOnTile && t < collapseDelay)
         {
             t += Time.deltaTime;
             yield return null;
         }
 
+        // If player stayed the whole time, collapse
         if (playerOnTile && !collapsing)
             StartCoroutine(Collapse());
     }
@@ -61,8 +64,9 @@ public class CollapsingTile_L3 : MonoBehaviour
         sr.enabled = false;
         col.enabled = false;
 
-        // Check pitfall death AFTER collapse
-        GameManager.instance.CheckPitfallDeath();
+        // NOTE: We removed CheckPitfallDeath() here.
+        // The GameManager Update() loop now watches the player Y position automatically.
+        // This ensures the death only happens when they actually fall, not just when the tile disappears.
 
         yield return null;
     }
