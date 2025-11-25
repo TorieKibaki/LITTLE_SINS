@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db56e8e75574064a98699a24164374c, type: 3}
+  m_Name: Level2_Data
+  m_EditorClassIdentifier: 
+  levelName: Level 2
+  introRiddle: "\u201CThese stones admire a traveler\u2019s touch\u2026\nyet they
+    grow restless when attention lingers.\u201D"
+  deathHint: "\u201CThe ground\u2026 sighs under devotion.\nA lighter touch pleases
+    it more.\u201D"

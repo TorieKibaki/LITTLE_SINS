@@ -13,13 +13,13 @@ public class Door : MonoBehaviour
         if (!collision.CompareTag("Player")) return;
 
         // Check if player can exit (handles Level 1 requirement #8)
-        if (!GameManager.instance.CanExit())
+      /*  if (!GameManager.instance.CanExit())
         {
-            // Requirement #9: Door does NOT activate
-            // Requirement #8: Hint is shown
+            // If the player cannot exit, start the ShowHint coroutine from the Door script.
+            // This is now fixed because ShowHint in the GameManager returns an IEnumerator.
             StartCoroutine(GameManager.instance.ShowHint("You need at least 1 collectible."));
             return;
-        }
+        }*/
 
         // Door Activation (Requirement #10)
         if (exitEffect != null)
@@ -29,10 +29,27 @@ public class Door : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
     }
 
+    // Inside Door.cs
+
     private IEnumerator LoadNextLevelAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        int next = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(next);
+
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // CHANGE "4" TO WHATEVER YOUR LAST LEVEL INDEX IS
+        if (currentSceneIndex == 4)
+        {
+            // We beat the last level! Show the UI.
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.ShowGameComplete();
+            }
+        }
+        else
+        {
+            // Normal behavior: Load next level
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        }
     }
 }

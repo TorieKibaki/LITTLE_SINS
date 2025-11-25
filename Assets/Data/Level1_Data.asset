@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db56e8e75574064a98699a24164374c, type: 3}
+  m_Name: Level1_Data
+  m_EditorClassIdentifier: 
+  levelName: Level 1
+  introRiddle: "\u201CAh\u2026 such lovely little treasures, aren\u2019t they?\nTake
+    a few\u2014\njust enough to warm the desire\u2026\nbut not enough to wake its
+    hunger.\u201D"
+  deathHint: "\u201CYou reached for more than the moment could bear.\nNot a crime\u2026
+    merely a lesson.\u201D"
