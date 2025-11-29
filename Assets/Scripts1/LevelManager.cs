@@ -78,10 +78,13 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        // Listen for Space key to close the riddle panel
+        // Listen for a Tap (Mobile) or Click (PC) to close the riddle panel
         if (introPanel != null && introPanel.activeSelf)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            // OLD CODE: if (Input.GetKeyDown(KeyCode.Space))
+
+            // NEW MOBILE CODE: Detects screen tap or mouse click
+            if (Input.GetMouseButtonDown(0))
             {
                 DismissIntro();
             }

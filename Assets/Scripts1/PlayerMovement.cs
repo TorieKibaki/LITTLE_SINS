@@ -1,4 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
+// 👇 VITAL: Needed for the new Input System
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,41 +10,43 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = true;
 
+    // New variable to store the joystick value
+    private Vector2 moveInput;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    // ================================================================
+    // NEW INPUT SYSTEM FUNCTIONS (Link these in the Inspector!)
+    // ================================================================
+
+    // Called automatically when you use the Joystick (or WASD)
+    public void OnMove(InputAction.CallbackContext context)
     {
-        // Handle jump input
-        Jump();
+        moveInput = context.ReadValue<Vector2>();
     }
 
-    // Physics updates should be in FixedUpdate
-    void FixedUpdate()
+    // Called automatically when you press the Jump Button
+    public void OnJump(InputAction.CallbackContext context)
     {
-        // Handle horizontal movement
-        Move();
-    }
-
-    void Move()
-    {
-        float x = Input.GetAxis("Horizontal");
-        // Maintain vertical velocity while setting horizontal velocity
-        rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
-    }
-
-    void Jump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // context.performed means "Button was just pressed"
+        if (context.performed && isGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isGrounded = false;
         }
     }
+    // ================================================================
 
-    // Check for ground collision
+    void FixedUpdate()
+    {
+        // We now use the variable 'moveInput.x' instead of Input.GetAxis
+        rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+    }
+
+    // Keep your existing ground check logic
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -51,4 +55,3 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
-

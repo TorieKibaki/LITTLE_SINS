@@ -810,6 +810,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 538133094263474496, guid: 66912a96f700359428c92d9194996b39, type: 3}
+      propertyPath: m_Color.a
+      value: 0.7019608
+      objectReference: {fileID: 0}
     - target: {fileID: 678368020199587399, guid: 66912a96f700359428c92d9194996b39, type: 3}
       propertyPath: m_Name
       value: MainCanvas
@@ -894,18 +898,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2611890751032794093, guid: 66912a96f700359428c92d9194996b39, type: 3}
-      propertyPath: m_text
-      value: Level 2
+    - target: {fileID: 1878601346128431481, guid: 66912a96f700359428c92d9194996b39, type: 3}
+      propertyPath: m_Color.a
+      value: 0.16862746
       objectReference: {fileID: 0}
     - target: {fileID: 2761522118374119690, guid: 66912a96f700359428c92d9194996b39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2118286599}
+    - target: {fileID: 4921543306042004739, guid: 66912a96f700359428c92d9194996b39, type: 3}
+      propertyPath: m_Color.a
+      value: 0.12941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6353893955025349416, guid: 66912a96f700359428c92d9194996b39, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 141
+      objectReference: {fileID: 0}
     - target: {fileID: 7129551207281115528, guid: 66912a96f700359428c92d9194996b39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2118286599}
+    - target: {fileID: 7535476145152449255, guid: 66912a96f700359428c92d9194996b39, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 181
+      objectReference: {fileID: 0}
+    - target: {fileID: 7535476145152449255, guid: 66912a96f700359428c92d9194996b39, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 146
+      objectReference: {fileID: 0}
     - target: {fileID: 8678863614664634174, guid: 66912a96f700359428c92d9194996b39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
