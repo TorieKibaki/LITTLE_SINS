@@ -145,13 +145,12 @@ public class GameManager : MonoBehaviour
                 btn.onClick.RemoveAllListeners(); btn.onClick.AddListener(RestartLevel);
             }
 
-            // 👇 UPDATED: Look for 'QuitButton' instead of 'MainMenuButton'
+            // Quit Button (Renamed from MainMenuButton)
             Transform quitTr = RecursiveFindChild(mainPausePanel.transform, "QuitButton");
             if (quitTr != null)
             {
                 Button btn = quitTr.GetComponent<Button>();
-                btn.onClick.RemoveAllListeners();
-                btn.onClick.AddListener(QuitGame); // Link to new Quit function
+                btn.onClick.RemoveAllListeners(); btn.onClick.AddListener(QuitGame);
             }
 
             mainPausePanel.SetActive(false);
@@ -169,31 +168,22 @@ public class GameManager : MonoBehaviour
         {
             gameCompletePanel = foundWinPanel;
 
-            // 1. Link Restart Button
-            // We use "RestartGame" to match your Screenshot Hierarchy name
+            // Restart Game (Win Screen)
             Transform restartTr = RecursiveFindChild(gameCompletePanel.transform, "RestartGame");
             if (restartTr != null)
             {
                 Button btn = restartTr.GetComponent<Button>();
-                btn.onClick.RemoveAllListeners();
-                // "Play Again" usually starts from Level 1
-                btn.onClick.AddListener(StartFirstLevel);
+                btn.onClick.RemoveAllListeners(); btn.onClick.AddListener(StartFirstLevel);
             }
-            else Debug.LogWarning("GM: Could not find 'RestartGame' button in Win Panel");
 
-            // 2. Link Quit Button (The change you asked for!)
-            // We use "QuitGame" to match your Screenshot Hierarchy name
+            // Quit Game (Win Screen)
             Transform quitTr = RecursiveFindChild(gameCompletePanel.transform, "QuitGame");
             if (quitTr != null)
             {
                 Button btn = quitTr.GetComponent<Button>();
-                btn.onClick.RemoveAllListeners();
-                // 👇 This now closes the app instead of going to the menu
-                btn.onClick.AddListener(QuitGame);
+                btn.onClick.RemoveAllListeners(); btn.onClick.AddListener(QuitGame);
             }
-            else Debug.LogWarning("GM: Could not find 'QuitGame' button in Win Panel");
-
-            gameCompletePanel.SetActive(false); // Hide it by default
+            gameCompletePanel.SetActive(false);
         }
 
         // Gameplay Objects
@@ -218,7 +208,6 @@ public class GameManager : MonoBehaviour
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         if (currentScene >= 1 && currentScene <= 4 && !isPlayerDead) CheckPitfallDeath();
 
-        // Android "Back" button
         if (Input.GetKeyDown(KeyCode.Escape) && !isPlayerDead && isGameReady && mainPausePanel != null)
         {
             TogglePause();
@@ -238,13 +227,10 @@ public class GameManager : MonoBehaviour
     public void ReturnToMenu() { Time.timeScale = 1.0f; isGamePaused = false; SceneManager.LoadScene(0); }
     public void StartFirstLevel() { SceneManager.LoadScene(1); }
 
-    // 👇 NEW FUNCTION: QUITS THE APP
     public void QuitGame()
     {
         Debug.Log("GameManager: Quitting Application...");
         Application.Quit();
-
-        // This line helps you see if it works while testing in the Editor
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
@@ -307,6 +293,7 @@ public class GameManager : MonoBehaviour
 
         if (LevelManager.instance != null) LevelManager.instance.ShowDeathHint();
 
+        // Wait for screen tap on Mobile
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
 
         RespawnPlayer();
@@ -337,18 +324,14 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EnableInteractionAfterDelay(float delay) { yield return new WaitForSecondsRealtime(delay); canInteract = true; }
     private void RespawnCollectibles() { foreach (Collectible c in activeCollectibles) 
-            if (c != null) c.Respawn(); foreach (PoisonCollectible p in activePoison)  
+            if (c != null) c.Respawn(); foreach (PoisonCollectible p in activePoison) 
             if (p != null) p.Respawn(); int currentLevelIndex = SceneManager.GetActiveScene().buildIndex; 
         if (currentLevelIndex == 4) ShuffleCollectiblePositions(); }
     private void ShuffleCollectiblePositions() { /* Keeping your existing logic here */ }
-    private void RespawnTiles() { 
-        int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;  
-        if (currentLevelIndex == 1 || currentLevelIndex == 2)  
-        { foreach (CollapsingTile_L2 t in activeL2Tiles) if (t != null) t.ResetTile(); } 
-        else if (currentLevelIndex == 3) { foreach (CollapsingTile_L3 t in activeL3Tiles)
-                if (t != null) t.ResetTile(); } else if (currentLevelIndex == 4)
-        { foreach (Tile_L4 t in activeL4Tiles) if (t != null) t.ResetTile(); }
-    }
+    private void RespawnTiles() { int currentLevelIndex = SceneManager.GetActiveScene().buildIndex; 
+        if (currentLevelIndex == 1 || currentLevelIndex == 2) { foreach (CollapsingTile_L2 t in activeL2Tiles) 
+                if (t != null) t.ResetTile(); } else if (currentLevelIndex == 3) { foreach (CollapsingTile_L3 t in activeL3Tiles) 
+                if (t != null) t.ResetTile(); } else if (currentLevelIndex == 4) { foreach (Tile_L4 t in activeL4Tiles) if (t != null) t.ResetTile(); } }
     private void UpdateUI() { if (collectibleText != null) collectibleText.text = collected.ToString(); }
 
     private Transform RecursiveFindChild(Transform parent, string childName)

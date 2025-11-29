@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ebb1e425d364bd4fbe8cab9da522260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: 25734d3eedea61f4794634aca64ba18e, type: 2}
+  levelData: {fileID: 11400000, guid: f02bad12224cc6746a3d6077356e9260, type: 2}
   introPanel: {fileID: 0}
   riddleText: {fileID: 0}
+  messagePanel: {fileID: 0}
+  messageText: {fileID: 0}
   deathPanel: {fileID: 0}
   deathHintText: {fileID: 0}

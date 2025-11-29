@@ -847,31 +847,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2611890751032794093, guid: 66912a96f700359428c92d9194996b39, type: 3}
-      propertyPath: m_text
-      value: Level 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3906728680139205618, guid: 66912a96f700359428c92d9194996b39, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4176821969199191435, guid: 66912a96f700359428c92d9194996b39, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4614288066783230546, guid: 66912a96f700359428c92d9194996b39, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6512721156756986504, guid: 66912a96f700359428c92d9194996b39, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66912a96f700359428c92d9194996b39, type: 3}
+--- !u!114 &848654925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3087491419113833940, guid: 66912a96f700359428c92d9194996b39, type: 3}
+  m_PrefabInstance: {fileID: 848654924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &848654926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 658647034183151318, guid: 66912a96f700359428c92d9194996b39, type: 3}
+  m_PrefabInstance: {fileID: 848654924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &864417872 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6474620449561583603, guid: 66912a96f700359428c92d9194996b39, type: 3}
@@ -1884,10 +1880,6 @@ PrefabInstance:
       value: LevelManager
       objectReference: {fileID: 0}
     - target: {fileID: 8234844596173158215, guid: 9157abe0ffe12094aa2d61ba60e71923, type: 3}
-      propertyPath: levelData
-      value: 
-      objectReference: {fileID: 11400000, guid: 9e6de41cd8e38264fa5396797b47ecc2, type: 2}
-    - target: {fileID: 8234844596173158215, guid: 9157abe0ffe12094aa2d61ba60e71923, type: 3}
       propertyPath: deathPanel
       value: 
       objectReference: {fileID: 1824386343}
@@ -1899,6 +1891,14 @@ PrefabInstance:
       propertyPath: riddleText
       value: 
       objectReference: {fileID: 1109886292}
+    - target: {fileID: 8234844596173158215, guid: 9157abe0ffe12094aa2d61ba60e71923, type: 3}
+      propertyPath: messageText
+      value: 
+      objectReference: {fileID: 848654925}
+    - target: {fileID: 8234844596173158215, guid: 9157abe0ffe12094aa2d61ba60e71923, type: 3}
+      propertyPath: messagePanel
+      value: 
+      objectReference: {fileID: 848654926}
     - target: {fileID: 8234844596173158215, guid: 9157abe0ffe12094aa2d61ba60e71923, type: 3}
       propertyPath: deathHintText
       value: 

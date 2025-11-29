@@ -1,57 +1,61 @@
 ﻿using UnityEngine;
-// 👇 VITAL: Needed for the new Input System
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float moveSpeed = 5f;
-    public float jumpForce = 7f;
+    public float jumpForce = 10f;
 
-    private Rigidbody2D rb;
-    private bool isGrounded = true;
+    [Header("Components")]
+    public Rigidbody2D rb;
+    public Transform groundCheck;
+    public LayerMask groundLayer;
 
-    // New variable to store the joystick value
+    // Internal variables
     private Vector2 moveInput;
+    private bool isGrounded;
 
-    void Start()
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
     }
 
-    // ================================================================
-    // NEW INPUT SYSTEM FUNCTIONS (Link these in the Inspector!)
-    // ================================================================
+    // --- INPUT SYSTEM FUNCTIONS ---
 
-    // Called automatically when you use the Joystick (or WASD)
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
     }
 
-    // Called automatically when you press the Jump Button
     public void OnJump(InputAction.CallbackContext context)
     {
-        // context.performed means "Button was just pressed"
         if (context.performed && isGrounded)
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            isGrounded = false;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
-    // ================================================================
 
-    void FixedUpdate()
+    // --- PHYSICS LOOP ---
+
+    private void FixedUpdate()
     {
-        // We now use the variable 'moveInput.x' instead of Input.GetAxis
+        // 1. Ground Check
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        // 2. Apply Movement
         rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
-    }
 
-    // Keep your existing ground check logic
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        // 3. FLIP CHARACTER DIRECTION (The New Part) 🔄
+        if (moveInput.x > 0)
         {
-            isGrounded = true;
+            // Moving Right -> Face Right (Scale 1)
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (moveInput.x < 0)
+        {
+            // Moving Left -> Face Left (Scale -1)
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
 }
