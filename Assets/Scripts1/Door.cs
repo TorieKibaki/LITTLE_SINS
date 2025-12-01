@@ -1,7 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using TMPro;
 
 public class Door : MonoBehaviour
 {
@@ -10,26 +9,28 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // 1. Only the player can trigger this
         if (!collision.CompareTag("Player")) return;
 
-        // Check if player can exit (handles Level 1 requirement #8)
-      /*  if (!GameManager.instance.CanExit())
+        // 2. CHECK: Do we have enough collectibles?
+        // Note: Make sure GameManager.instance.CanExit() returns FALSE if collected == 0
+        if (GameManager.instance != null && !GameManager.instance.CanExit())
         {
-            // If the player cannot exit, start the ShowHint coroutine from the Door script.
-            // This is now fixed because ShowHint in the GameManager returns an IEnumerator.
-            StartCoroutine(GameManager.instance.ShowHint("You need at least 1 collectible."));
+            // 3. IF NOT: Trigger the pop-up
+            if (LevelManager.instance != null)
+            {
+                // Show message for 3 seconds
+                StartCoroutine(LevelManager.instance.ShowTemporaryHint("The door remains shut for those who carry nothing.", 3f));
+            }
+            // STOP here. Do not load the next level.
             return;
-        }*/
+        }
 
-        // Door Activation (Requirement #10)
-        if (exitEffect != null)
-            Instantiate(exitEffect, transform.position, Quaternion.identity);
-
+        // 4. SUCCESS: Load next level
+        if (exitEffect != null) Instantiate(exitEffect, transform.position, Quaternion.identity);
         StartCoroutine(LoadNextLevelAfterDelay(sceneLoadDelay));
         GetComponent<SpriteRenderer>().enabled = false;
     }
-
-    // Inside Door.cs
 
     private IEnumerator LoadNextLevelAfterDelay(float delay)
     {
@@ -37,10 +38,10 @@ public class Door : MonoBehaviour
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // CHANGE "4" TO WHATEVER YOUR LAST LEVEL INDEX IS
+        // CHECK IF THIS IS THE LAST LEVEL (Index 4)
         if (currentSceneIndex == 4)
         {
-            // We beat the last level! Show the UI.
+            // Trigger Win Screen
             if (GameManager.instance != null)
             {
                 GameManager.instance.ShowGameComplete();
@@ -48,7 +49,7 @@ public class Door : MonoBehaviour
         }
         else
         {
-            // Normal behavior: Load next level
+            // Load Next Level
             SceneManager.LoadScene(currentSceneIndex + 1);
         }
     }
