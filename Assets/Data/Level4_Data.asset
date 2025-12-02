@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Level4_Data
   m_EditorClassIdentifier: 
   levelName: Level 4
-  introRiddle: "\u201CWatch how the world crumbles\u2026always starting where something
-    shinier once stood.And those apples? Some stare at the ripe ones with\u2026 resentment.\u201D"
+  introRiddle: '"Collect at least 1 good apple. Watch out for the rotten apples."'
   deathHint: "\u201CNot all things that appear similar share the same story.\u201D"

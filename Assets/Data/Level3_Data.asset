@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Level3_Data
   m_EditorClassIdentifier: 
   levelName: Level 3
-  introRiddle: "\u201CMmm\u2026 the soil here is peckish.\nStep as though it might\u2026
-    sample you.\u201D"
+  introRiddle: "\"Collect A jar, but the soil here is peckish.\u201D"
   deathHint: "\u201CYou stood still long enough to look delicious.\u201D"

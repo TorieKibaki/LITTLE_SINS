@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: Level1_Data
   m_EditorClassIdentifier: 
   levelName: Level 1
-  introRiddle: "\u201CAh\u2026 such lovely little treasures, aren\u2019t they?\nTake
-    a few\u2014\njust enough to warm the desire\u2026\nbut not enough to wake its
-    hunger.\u201D"
-  deathHint: "\u201CYou reached for more than the moment could bear.\nNot a crime\u2026
-    merely a lesson.\u201D"
+  introRiddle: "\"Just take few little treasures, aren\u2019t they lovely?\""
+  deathHint: "\u201CYou took more than the moment allowed.\u201D"

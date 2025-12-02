@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Level2_Data
   m_EditorClassIdentifier: 
   levelName: Level 2
-  introRiddle: "\u201CThese stones admire a traveler\u2019s touch\u2026\nyet they
-    grow restless when attention lingers.\u201D"
-  deathHint: "\u201CThe ground\u2026 sighs under devotion.\nA lighter touch pleases
-    it more.\u201D"
+  introRiddle: "\u201CCollect something. The stones are solid but soft when you land
+    \u201D"
+  deathHint: '"You lingered too long"'
