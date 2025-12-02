@@ -7,13 +7,28 @@ public class Door : MonoBehaviour
     public ParticleSystem exitEffect;
     public float sceneLoadDelay = 0.5f;
 
+    // REFERENCE FOR THE AUDIO SOURCE
+    private AudioSource audioSource;
+
+    // --- INITIALIZATION ---
+    private void Awake()
+    {
+        // Get the AudioSource component on this same GameObject
+        audioSource = GetComponent<AudioSource>();
+
+        // Optional: Check if the component is missing
+        if (audioSource == null)
+        {
+            Debug.LogWarning("Door script on " + gameObject.name + " is missing an AudioSource component!");
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 1. Only the player can trigger this
         if (!collision.CompareTag("Player")) return;
 
         // 2. CHECK: Do we have enough collectibles?
-        // Note: Make sure GameManager.instance.CanExit() returns FALSE if collected == 0
         if (GameManager.instance != null && !GameManager.instance.CanExit())
         {
             // 3. IF NOT: Trigger the pop-up
@@ -27,13 +42,26 @@ public class Door : MonoBehaviour
         }
 
         // 4. SUCCESS: Load next level
+
+        // Play the door sound effect
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
+
+        // Instantiate particle effect
         if (exitEffect != null) Instantiate(exitEffect, transform.position, Quaternion.identity);
+
+        // Start scene loading coroutine
         StartCoroutine(LoadNextLevelAfterDelay(sceneLoadDelay));
+
+        // Hide the door sprite
         GetComponent<SpriteRenderer>().enabled = false;
     }
 
     private IEnumerator LoadNextLevelAfterDelay(float delay)
     {
+        // Wait for the specified delay (allowing the sound and effect to play)
         yield return new WaitForSeconds(delay);
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
