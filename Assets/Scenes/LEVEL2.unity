@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
-  collectEffect: {fileID: 0}
+  collectEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
 --- !u!61 &410868289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
-  collectEffect: {fileID: 0}
+  collectEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
 --- !u!61 &458914419
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2128,7 +2128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
-  collectEffect: {fileID: 0}
+  collectEffect: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
 --- !u!61 &1480450626
 BoxCollider2D:
   m_ObjectHideFlags: 0
