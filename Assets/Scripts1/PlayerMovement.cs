@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
+    public float clampedJumpForce = 5f;       // Reduced jump force
+    public float jumpHeightThreshold = 1.0f;  // Y-coordinate cutoff
 
     [Header("Components")]
     public Rigidbody2D rb;
@@ -32,7 +34,23 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.performed && isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            float currentYPosition = transform.position.y;
+            float finalJumpForce;
+
+            // CHECK THE PLAYER'S HEIGHT AND CLAMP THE JUMP FORCE
+            if (currentYPosition >= jumpHeightThreshold)
+            {
+                // Use the reduced jump force
+                finalJumpForce = clampedJumpForce;
+            }
+            else
+            {
+                // Use the normal jump force
+                finalJumpForce = jumpForce;
+            }
+
+            // Apply the chosen velocity
+            rb.velocity = new Vector2(rb.velocity.x, finalJumpForce);
         }
     }
 
@@ -46,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         // 2. Apply Movement
         rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
 
-        // 3. FLIP CHARACTER DIRECTION (The New Part) 🔄
+        // 3. FLIP CHARACTER DIRECTION 🔄
         if (moveInput.x > 0)
         {
             // Moving Right -> Face Right (Scale 1)
